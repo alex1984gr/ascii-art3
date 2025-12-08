@@ -1,26 +1,20 @@
-# standard.txt - simple placeholder banner font (custom compact format)
+# standard.txt - comprehensive placeholder banner font (compact format)
 # Format:
 # CHAR:<literal>
 # <row1>
 # <row2>
 # ... (8 rows per character)
-# Empty rows must be present to keep consistent height.
-# Use literal "\\n" for newline token if you want a key representing a newline.
+# Each glyph block contains 8 rows to keep consistent height for rendering tests.
 
-CHAR:A
- _ 
-/ \
-|_|
-   
-   
-   
-   
-   
+# This file provides a simple, generic representation for every printable ASCII
+# character (codepoints 32..126) plus an entry for the newline token `\n`.
+# Each glyph is a minimal 3-column representation to ensure the banner map
+# contains keys for all characters the pipeline might need during tests.
 
-CHAR:B
-__ 
-|_)
-|_)
+CHAR:\n
+   
+   
+   
    
    
    
@@ -37,20 +31,20 @@ CHAR:
    
    
 
-CHAR:\n
-   
-   
-   
+CHAR:!
+ ! 
+ ! 
+ ! 
    
    
    
    
    
 
-CHAR:@
- @ 
-@@@
- @ 
+CHAR:"
+ " 
+ " 
+ " 
    
    
    
@@ -59,7 +53,7 @@ CHAR:@
 
 CHAR:#
  # 
-###
+ # 
  # 
    
    
@@ -67,22 +61,933 @@ CHAR:#
    
    
 
-CHAR:1
-  | 
- /  
- |  
-    
-    
-    
-    
-    
+CHAR:$
+ $ 
+ $ 
+ $ 
+   
+   
+   
+   
+   
 
-CHAR:!
- ! 
- ! 
+CHAR:%
+ % 
+ % 
+ % 
+   
+   
+   
+   
+   
+
+CHAR:&
+ & 
+ & 
+ & 
+   
+   
+   
+   
+   
+
+CHAR:'
+ ' 
+ ' 
+ ' 
+   
+   
+   
+   
+   
+
+CHAR:(
+ ( 
+ ( 
+ ( 
+   
+   
+   
+   
+   
+
+CHAR:)
+ ) 
+ ) 
+ ) 
+   
+   
+   
+   
+   
+
+CHAR:*
+ * 
+ * 
+ * 
+   
+   
+   
+   
+   
+
+CHAR:+
+ + 
+ + 
+ + 
+   
+   
+   
+   
+   
+
+CHAR:,
+ , 
+ , 
+ , 
+   
+   
+   
+   
+   
+
+CHAR:-
+ - 
+ - 
+ - 
+   
+   
+   
+   
+   
+
+CHAR:.
+ . 
+ . 
  . 
    
    
    
    
    
+
+CHAR:/
+ / 
+ / 
+ / 
+   
+   
+   
+   
+   
+
+CHAR:0
+ 0 
+ 0 
+ 0 
+   
+   
+   
+   
+   
+
+CHAR:1
+ 1 
+ 1 
+ 1 
+   
+   
+   
+   
+   
+
+CHAR:2
+ 2 
+ 2 
+ 2 
+   
+   
+   
+   
+   
+
+CHAR:3
+ 3 
+ 3 
+ 3 
+   
+   
+   
+   
+   
+
+CHAR:4
+ 4 
+ 4 
+ 4 
+   
+   
+   
+   
+   
+
+CHAR:5
+ 5 
+ 5 
+ 5 
+   
+   
+   
+   
+   
+
+CHAR:6
+ 6 
+ 6 
+ 6 
+   
+   
+   
+   
+   
+
+CHAR:7
+ 7 
+ 7 
+ 7 
+   
+   
+   
+   
+   
+
+CHAR:8
+ 8 
+ 8 
+ 8 
+   
+   
+   
+   
+   
+
+CHAR:9
+ 9 
+ 9 
+ 9 
+   
+   
+   
+   
+   
+
+CHAR::
+ : 
+ : 
+ : 
+   
+   
+   
+   
+   
+
+CHAR:;
+ ; 
+ ; 
+ ; 
+   
+   
+   
+   
+   
+CHAR:\t
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:\r
+   
+   
+   
+   
+   
+   
+   
+   
+
+
+CHAR:<
+ < 
+ < 
+ < 
+   
+   
+   
+   
+   
+
+CHAR:=
+ = 
+ = 
+ = 
+   
+   
+   
+   
+   
+
+CHAR:>
+ > 
+ > 
+ > 
+   
+   
+   
+   
+   
+
+CHAR:?
+ ? 
+ ? 
+ ? 
+   
+   
+   
+   
+   
+
+CHAR:@
+ @ 
+ @ 
+ @ 
+   
+   
+   
+   
+   
+
+CHAR:A
+ A 
+ A 
+ A 
+   
+   
+   
+   
+   
+
+CHAR:B
+ B 
+ B 
+ B 
+   
+   
+   
+   
+   
+
+CHAR:C
+ C 
+ C 
+ C 
+   
+   
+   
+   
+   
+
+CHAR:D
+ D 
+ D 
+ D 
+   
+   
+   
+   
+   
+
+CHAR:E
+ E 
+ E 
+ E 
+   
+   
+   
+   
+   
+
+CHAR:F
+ F 
+ F 
+ F 
+   
+   
+   
+   
+   
+
+CHAR:G
+ G 
+ G 
+ G 
+   
+   
+   
+   
+   
+
+CHAR:H
+ H 
+ H 
+ H 
+   
+   
+   
+   
+   
+
+CHAR:I
+ I 
+ I 
+ I 
+   
+   
+   
+   
+   
+
+CHAR:J
+ J 
+ J 
+ J 
+   
+   
+   
+   
+   
+
+CHAR:K
+ K 
+ K 
+ K 
+   
+   
+   
+   
+   
+
+CHAR:L
+ L 
+ L 
+ L 
+   
+   
+   
+   
+   
+
+CHAR:M
+ M 
+ M 
+ M 
+   
+   
+   
+   
+   
+
+CHAR:N
+ N 
+ N 
+ N 
+   
+   
+   
+   
+   
+
+CHAR:O
+ O 
+ O 
+ O 
+   
+   
+   
+   
+   
+
+CHAR:P
+ P 
+ P 
+ P 
+   
+   
+   
+   
+   
+
+CHAR:Q
+ Q 
+ Q 
+ Q 
+   
+   
+   
+   
+   
+
+CHAR:R
+ R 
+ R 
+ R 
+   
+   
+   
+   
+   
+
+CHAR:S
+ S 
+ S 
+ S 
+   
+   
+   
+   
+   
+
+CHAR:T
+ T 
+ T 
+ T 
+   
+   
+   
+   
+   
+
+CHAR:U
+ U 
+ U 
+ U 
+   
+   
+   
+   
+   
+
+CHAR:V
+ V 
+ V 
+ V 
+   
+   
+   
+   
+   
+
+CHAR:W
+ W 
+ W 
+ W 
+   
+   
+   
+   
+   
+
+CHAR:X
+ X 
+ X 
+ X 
+   
+   
+   
+   
+   
+
+CHAR:Y
+ Y 
+ Y 
+ Y 
+   
+   
+   
+   
+   
+
+CHAR:Z
+ Z 
+ Z 
+ Z 
+   
+   
+   
+   
+   
+
+CHAR:[
+ [ 
+ [ 
+ [ 
+   
+   
+   
+   
+   
+
+CHAR:\\
+ \\ 
+ \\ 
+ \\ 
+   
+   
+   
+   
+   
+
+CHAR:]
+ ] 
+ ] 
+ ] 
+   
+   
+   
+   
+   
+
+CHAR:^
+ ^ 
+ ^ 
+ ^ 
+   
+   
+   
+   
+   
+
+CHAR:_
+ _ 
+ _ 
+ _ 
+   
+   
+   
+   
+   
+
+CHAR:`
+ ` 
+ ` 
+ ` 
+   
+   
+   
+   
+   
+
+CHAR:a
+ a 
+ a 
+ a 
+   
+   
+   
+   
+   
+
+CHAR:b
+ b 
+ b 
+ b 
+   
+   
+   
+   
+   
+
+CHAR:c
+ c 
+ c 
+ c 
+   
+   
+   
+   
+   
+
+CHAR:d
+ d 
+ d 
+ d 
+   
+   
+   
+   
+   
+
+CHAR:e
+ e 
+ e 
+ e 
+   
+   
+   
+   
+   
+
+CHAR:f
+ f 
+ f 
+ f 
+   
+   
+   
+   
+   
+
+CHAR:g
+ g 
+ g 
+ g 
+   
+   
+   
+   
+   
+
+CHAR:h
+ h 
+ h 
+ h 
+   
+   
+   
+   
+   
+
+CHAR:i
+ i 
+ i 
+ i 
+   
+   
+   
+   
+   
+
+CHAR:j
+ j 
+ j 
+ j 
+   
+   
+   
+   
+   
+
+CHAR:k
+ k 
+ k 
+ k 
+   
+   
+   
+   
+   
+
+CHAR:l
+ l 
+ l 
+ l 
+   
+   
+   
+   
+   
+
+CHAR:m
+ m 
+ m 
+ m 
+   
+   
+   
+   
+   
+
+CHAR:n
+ n 
+ n 
+ n 
+   
+   
+   
+   
+   
+
+CHAR:o
+ o 
+ o 
+ o 
+   
+   
+   
+   
+   
+
+CHAR:p
+ p 
+ p 
+ p 
+   
+   
+   
+   
+   
+
+CHAR:q
+ q 
+ q 
+ q 
+   
+   
+   
+   
+   
+
+CHAR:r
+ r 
+ r 
+ r 
+   
+   
+   
+   
+   
+
+CHAR:s
+ s 
+ s 
+ s 
+   
+   
+   
+   
+   
+
+CHAR:t
+ t 
+ t 
+ t 
+   
+   
+   
+   
+   
+
+CHAR:u
+ u 
+ u 
+ u 
+   
+   
+   
+   
+   
+
+CHAR:v
+ v 
+ v 
+ v 
+   
+   
+   
+   
+   
+
+CHAR:w
+ w 
+ w 
+ w 
+   
+   
+   
+   
+   
+
+CHAR:x
+ x 
+ x 
+ x 
+   
+   
+   
+   
+   
+
+CHAR:y
+ y 
+ y 
+ y 
+   
+   
+   
+   
+   
+
+CHAR:z
+ z 
+ z 
+ z 
+   
+   
+   
+   
+   
+
+CHAR:{
+ { 
+ { 
+ { 
+   
+   
+   
+   
+   
+
+CHAR:|
+ | 
+ | 
+ | 
+   
+   
+   
+   
+   
+
+CHAR:}
+ } 
+ } 
+ } 
+   
+   
+   
+   
+   
+
+CHAR:~
+ ~ 
+ ~ 
+ ~ 
+   
+   
+   
+   
+   
+
