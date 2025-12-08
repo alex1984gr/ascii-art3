@@ -1,20 +1,20 @@
-# shadow.txt - alternate placeholder banner (same compact format as standard.txt)
-# This file is intentionally different to represent a different style.
+# shadow.txt - comprehensive placeholder banner font (compact format)
+# Format:
+# CHAR:<literal>
+# <row1>
+# <row2>
+# ... (8 rows per character)
+# Each glyph block contains 8 rows to keep consistent height for rendering tests.
 
-CHAR:A
-/\ 
-\ \
-/--\
-    
-    
-    
-    
-    
+# This file provides a simple, generic representation for every printable ASCII
+# character (codepoints 32..126) plus an entry for the newline token `\n`.
+# Each glyph is a minimal 3-column representation to ensure the banner map
+# contains keys for all characters the pipeline might need during tests.
 
-CHAR:B
-|~~
-|__)
-|__)
+CHAR:\n
+   
+   
+   
    
    
    
@@ -31,20 +31,20 @@ CHAR:
    
    
 
-CHAR:\n
-   
-   
-   
+CHAR:!
+ ! 
+ ! 
+ ! 
    
    
    
    
    
 
-CHAR:@
-(@)
-@@@
-(@)
+CHAR:"
+ " 
+ " 
+ " 
    
    
    
@@ -52,11 +52,675 @@ CHAR:@
    
 
 CHAR:#
-# #
-###
-# #
+ # 
+ # 
+ # 
    
    
+   
+   
+   
+
+CHAR:$
+ $ 
+ $ 
+ $ 
+   
+   
+   
+   
+   
+
+CHAR:%
+ % 
+ % 
+ % 
+   
+   
+   
+   
+   
+
+CHAR:&
+ & 
+ & 
+ & 
+   
+   
+   
+   
+   
+
+CHAR:'
+ ' 
+ ' 
+ ' 
+   
+   
+   
+   
+   
+
+CHAR:(
+ ( 
+ ( 
+ ( 
+   
+   
+   
+   
+   
+
+CHAR:)
+ ) 
+ ) 
+ ) 
+   
+   
+   
+   
+   
+
+CHAR:*
+ * 
+ * 
+ * 
+   
+   
+   
+   
+   
+
+CHAR:+
+ + 
+ + 
+ + 
+   
+   
+   
+   
+   
+
+CHAR:,
+ , 
+ , 
+ , 
+   
+   
+   
+   
+   
+
+CHAR:-
+ - 
+ - 
+ - 
+   
+   
+   
+   
+   
+
+CHAR:.
+ . 
+ . 
+ . 
+   
+   
+   
+   
+   
+
+CHAR:/
+ / 
+ / 
+ / 
+   
+   
+   
+   
+   
+
+CHAR:0
+ 0 
+ 0 
+ 0 
+   
+   
+   
+   
+   
+
+CHAR:1
+ 1 
+ 1 
+ 1 
+   
+   
+   
+   
+   
+
+CHAR:2
+ 2 
+ 2 
+ 2 
+   
+   
+   
+   
+   
+
+CHAR:3
+ 3 
+ 3 
+ 3 
+   
+   
+   
+   
+   
+
+CHAR:4
+ 4 
+ 4 
+ 4 
+   
+   
+   
+   
+   
+
+CHAR:5
+ 5 
+ 5 
+ 5 
+   
+   
+   
+   
+   
+
+CHAR:6
+ 6 
+ 6 
+ 6 
+   
+   
+   
+   
+   
+
+CHAR:7
+ 7 
+ 7 
+ 7 
+   
+   
+   
+   
+   
+
+CHAR:8
+ 8 
+ 8 
+ 8 
+   
+   
+   
+   
+   
+
+CHAR:9
+ 9 
+ 9 
+ 9 
+   
+   
+   
+   
+   
+
+CHAR::
+ : 
+ : 
+ : 
+   
+   
+   
+   
+   
+
+CHAR:;
+ ; 
+ ; 
+ ; 
+   
+   
+   
+   
+   
+
+CHAR:<
+ < 
+ < 
+ < 
+   
+   
+   
+   
+   
+
+CHAR:=
+ = 
+ = 
+ = 
+   
+   
+   
+   
+   
+
+CHAR:>
+ > 
+ > 
+ > 
+   
+   
+   
+   
+   
+
+CHAR:?
+ ? 
+ ? 
+ ? 
+   
+   
+   
+   
+   
+
+CHAR:@
+ @ 
+ @ 
+ @ 
+   
+   
+   
+   
+   
+
+CHAR:A
+ A 
+ A 
+ A 
+   
+   
+   
+   
+   
+
+CHAR:B
+ B 
+ B 
+ B 
+   
+   
+   
+   
+   
+
+CHAR:C
+ C 
+ C 
+ C 
+   
+   
+   
+   
+   
+
+CHAR:D
+ D 
+ D 
+ D 
+   
+   
+   
+   
+   
+
+CHAR:E
+ E 
+ E 
+ E 
+   
+   
+   
+   
+   
+
+CHAR:F
+ F 
+ F 
+ F 
+   
+   
+   
+   
+   
+
+CHAR:G
+ G 
+ G 
+ G 
+   
+   
+   
+   
+   
+
+CHAR:H
+ H 
+ H 
+ H 
+   
+   
+   
+   
+   
+
+CHAR:I
+ I 
+ I 
+ I 
+   
+   
+   
+   
+   
+
+CHAR:J
+ J 
+ J 
+ J 
+   
+   
+   
+   
+   
+
+CHAR:K
+ K 
+ K 
+ K 
+   
+   
+   
+   
+   
+
+CHAR:L
+ L 
+ L 
+ L 
+   
+   
+   
+   
+   
+
+CHAR:M
+ M 
+ M 
+ M 
+   
+   
+   
+   
+   
+
+CHAR:N
+ N 
+ N 
+ N 
+   
+   
+   
+   
+   
+
+CHAR:O
+ O 
+ O 
+ O 
+   
+   
+   
+   
+   
+
+CHAR:P
+ P 
+ P 
+ P 
+   
+   
+   
+   
+   
+
+CHAR:Q
+ Q 
+ Q 
+ Q 
+   
+   
+   
+   
+   
+
+CHAR:R
+ R 
+ R 
+ R 
+   
+   
+   
+   
+   
+
+CHAR:S
+ S 
+ S 
+ S 
+   
+   
+   
+   
+   
+
+CHAR:T
+ T 
+ T 
+ T 
+   
+   
+   
+   
+   
+
+CHAR:U
+ U 
+ U 
+ U 
+   
+   
+   
+   
+   
+
+CHAR:V
+ V 
+ V 
+ V 
+   
+   
+   
+   
+   
+
+CHAR:W
+ W 
+ W 
+ W 
+   
+   
+   
+   
+   
+
+CHAR:X
+ X 
+ X 
+ X 
+   
+   
+   
+   
+   
+
+CHAR:Y
+ Y 
+ Y 
+ Y 
+   
+   
+   
+   
+   
+
+CHAR:Z
+ Z 
+ Z 
+ Z 
+   
+   
+   
+   
+   
+
+CHAR:[
+ [ 
+ [ 
+ [ 
+   
+   
+   
+   
+   
+
+CHAR:\\
+ \\ 
+ \\ 
+ \\ 
+   
+   
+   
+   
+   
+
+CHAR:]
+ ] 
+ ] 
+ ] 
+   
+   
+   
+   
+   
+
+CHAR:^
+ ^ 
+ ^ 
+ ^ 
+   
+   
+   
+   
+   
+
+CHAR:_
+ _ 
+ _ 
+ _ 
+   
+   
+   
+   
+   
+
+CHAR:`
+ ` 
+ ` 
+ ` 
+   
+   
+   
+   
+   
+
+CHAR:a
+ a 
+ a 
+ a 
+   
+   
+   
+   
+   
+
+CHAR:b
+ b 
+ b 
+ b 
+   
+   
+   
+   
+   
+
+CHAR:c
+ c 
+ c 
+ c 
+   
+   
+   
+   
+   
+
+CHAR:d
+ d 
+ d 
+ d 
+   
+   
+   
+   
+   
+
+CHAR:e
+ e 
+ e 
+ e 
+   
+   
+   
+   
+   
+
    
    
    
