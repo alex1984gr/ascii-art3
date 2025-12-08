@@ -27,6 +27,7 @@ func TestRenderLines_SingleCharacter(t *testing.T) {
 
 	// Call RenderLines with the tokens and banner to produce output lines
 	lines := pipeline.RenderLines(tokens, banner)
+	// [DEBUG] Rendering execution point — check if RenderLines produces output with correct dimensions
 
 	// Define the expected output: the glyphs for 'A' from the banner
 	expected := []string{
@@ -62,6 +63,7 @@ func TestRenderLines_MultipleCharacters(t *testing.T) {
 
 	// Call RenderLines to concatenate the glyphs horizontally
 	lines := pipeline.RenderLines(tokens, banner)
+	// [DEBUG] Multi-character concatenation point — check if RenderLines correctly concatenates multiple glyphs
 
 	// Define the expected output: each row should be the concatenation of A's row and B's row
 	expected := []string{
