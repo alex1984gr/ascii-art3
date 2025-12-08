@@ -12,6 +12,7 @@ func TestValidateInput_Valid(t *testing.T) {
 	input := "Hello, World!\n123"
 	// Call ValidateInput and capture any error returned
 	err := pipeline.ValidateInput(input)
+	// [DEBUG] Valid input validation point — check if ValidateInput correctly accepts legitimate input
 	// Check if an error occurred; if so, report the error with Errorf (test continues)
 	if err != nil {
 		t.Errorf("Expected valid input, got error: %v", err)
@@ -24,6 +25,7 @@ func TestValidateInput_InvalidChar(t *testing.T) {
 	input := "Hello\x01World"
 	// Call ValidateInput and capture any error returned
 	err := pipeline.ValidateInput(input)
+	// [DEBUG] Invalid character detection point — check if ValidateInput rejects control/non-printable chars
 	// Check if no error occurred; if so, report that an error was expected
 	if err == nil {
 		t.Errorf("Expected error for invalid input, got nil")
@@ -36,6 +38,7 @@ func TestValidateInput_EmptyInput(t *testing.T) {
 	input := ""
 	// Call ValidateInput and capture any error returned
 	err := pipeline.ValidateInput(input)
+	// [DEBUG] Empty input validation point — check if ValidateInput rejects zero-length strings
 	// Check if no error occurred; if so, report that an error was expected
 	if err == nil {
 		t.Errorf("Expected error for empty input, got nil")
@@ -52,6 +55,7 @@ func TestValidateInput_LongInput(t *testing.T) {
 	}
 	// Call ValidateInput with the long input and capture any error returned
 	err := pipeline.ValidateInput(input)
+	// [DEBUG] Maximum length enforcement point — check if ValidateInput enforces length limits (10000 chars)
 	// Check if no error occurred; if so, report that an error was expected
 	if err == nil {
 		t.Errorf("Expected error for long input, got nil")
