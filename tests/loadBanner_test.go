@@ -12,6 +12,7 @@ import (
 func TestLoadBanner_ValidBanner(t *testing.T) {
 	// Call LoadBanner with the name "standard" and capture the returned banner map and error
 	banner, err := pipeline.LoadBanner("standard")
+	// [DEBUG] Banner file loading point — check if LoadBanner correctly reads and parses banner file
 	// If an error occurred, fail the test immediately with the error message
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
@@ -21,6 +22,7 @@ func TestLoadBanner_ValidBanner(t *testing.T) {
 	requiredChars := []string{"A", "B", " ", "1", "!"}
 	// Iterate over each expected character and verify it appears as a key in the banner map
 	for _, c := range requiredChars {
+		// [DEBUG] Character lookup point — check if expected glyph keys exist in banner map
 		if _, ok := banner[c]; !ok {
 			// If a character is missing, report an error but continue checking others
 			t.Errorf("expected character %q to be present in banner", c)
@@ -32,6 +34,7 @@ func TestLoadBanner_ValidBanner(t *testing.T) {
 func TestLoadBanner_InvalidBanner(t *testing.T) {
 	// Call LoadBanner with a name that should not exist and ignore the returned banner
 	_, err := pipeline.LoadBanner("nonexistent")
+	// [DEBUG] Error handling for missing banner file — check if LoadBanner detects nonexistent banners
 	// Expect an error; if nil, fail the test
 	if err == nil {
 		t.Fatal("expected error for nonexistent banner, got nil")
