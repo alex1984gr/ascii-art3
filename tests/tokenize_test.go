@@ -16,6 +16,7 @@ func TestTokenize_SimpleString(t *testing.T) {
 
 	// Call Tokenize and capture the returned token slice
 	tokens := pipeline.Tokenize(input)
+	// [DEBUG] Simple tokenization point — check if Tokenize correctly splits string into individual characters
 	// Use reflect.DeepEqual to compare the tokens with the expected result
 	if !reflect.DeepEqual(tokens, expected) {
 		// Report an error if the results don't match
@@ -32,6 +33,7 @@ func TestTokenize_EmptyString(t *testing.T) {
 
 	// Call Tokenize and capture the returned token slice
 	tokens := pipeline.Tokenize(input)
+	// [DEBUG] Empty string handling point — check if Tokenize correctly returns empty slice for empty input
 	// Use reflect.DeepEqual to compare the tokens with the expected result
 	if !reflect.DeepEqual(tokens, expected) {
 		// Report an error if the results don't match
@@ -48,6 +50,7 @@ func TestTokenize_WithNewlines(t *testing.T) {
 
 	// Call Tokenize and capture the returned token slice
 	tokens := pipeline.Tokenize(input)
+	// [DEBUG] Newline preservation point — check if Tokenize correctly includes newline as a token
 	// Use reflect.DeepEqual to compare the tokens with the expected result
 	if !reflect.DeepEqual(tokens, expected) {
 		// Report an error if the results don't match
@@ -64,6 +67,7 @@ func TestTokenize_SpecialCharacters(t *testing.T) {
 
 	// Call Tokenize and capture the returned token slice
 	tokens := pipeline.Tokenize(input)
+	// [DEBUG] Special character tokenization point — check if Tokenize preserves punctuation, spaces, and symbols
 	// Use reflect.DeepEqual to compare the tokens with the expected result
 	if !reflect.DeepEqual(tokens, expected) {
 		// Report an error if the results don't match
