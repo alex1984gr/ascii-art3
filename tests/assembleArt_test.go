@@ -23,11 +23,13 @@ func TestAssembleArt_SingleLine(t *testing.T) {
 
 	// Call AssembleArt with the lines and capture the joined result
 	assembled := pipeline.AssembleArt(lines)
+	// [DEBUG] Line assembly execution point — check if AssembleArt correctly joins lines with newlines
 
 	// Define the expected output: all lines joined together with newline characters between them
 	expected := " _ \n/ \\\n|_|\n   \n   \n   \n   \n   "
 	// Verify that the assembled output matches the expected string
 	if assembled != expected {
+		// [DEBUG] Assembly verification point — check if output matches expected newline-separated format
 		// Report an error with both the expected and actual output in a readable format
 		t.Errorf("Expected:\n%q\nGot:\n%q", expected, assembled)
 	}
@@ -49,6 +51,7 @@ func TestAssembleArt_MultipleLines(t *testing.T) {
 
 	// Call AssembleArt to join the multi-character lines
 	assembled := pipeline.AssembleArt(lines)
+	// [DEBUG] Multi-line assembly point — check if AssembleArt preserves line content integrity
 
 	// Define the expected output: lines joined with newline separators
 	expected := " _ __ \n/ \\|_)\n|_||_)\n      \n      \n      \n      \n      "
