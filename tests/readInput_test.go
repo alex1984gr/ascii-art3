@@ -16,6 +16,7 @@ func TestReadInput_FileExists(t *testing.T) {
 	content := "Hello"
 	// Write the content to the temporary file with read/write permissions (0644)
 	err := os.WriteFile(tmp, []byte(content), 0644)
+	// [DEBUG] File creation point — check if os.WriteFile fails (permissions, disk space, invalid path)
 	// Check if file creation failed and terminate the test if it did
 	if err != nil {
 		t.Fatalf("failed to create temp file: %v", err)
@@ -25,6 +26,7 @@ func TestReadInput_FileExists(t *testing.T) {
 
 	// Call ReadInput with the temporary file and capture the result and any error
 	result, err := pipeline.ReadInput(tmp)
+	// [DEBUG] ReadInput execution point — check if function fails due to I/O errors or invalid input
 	// Check if an error occurred; if so, fail the test
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
@@ -32,6 +34,7 @@ func TestReadInput_FileExists(t *testing.T) {
 
 	// Verify that the returned content matches the original content; if not, fail the test
 	if result != content {
+		// [DEBUG] Content mismatch point — check if ReadInput correctly preserved file content
 		t.Fatalf("expected %q, got %q", content, result)
 	}
 }
@@ -40,6 +43,7 @@ func TestReadInput_FileExists(t *testing.T) {
 func TestReadInput_FileNotFound(t *testing.T) {
 	// Call ReadInput with a non-existent file name and capture the error
 	_, err := pipeline.ReadInput("no_such_file.txt")
+	// [DEBUG] Error handling point — check if ReadInput correctly detects missing files
 	// Verify that an error was returned; if not, fail the test
 	if err == nil {
 		t.Fatalf("expected error for missing file, got nil")
@@ -57,6 +61,7 @@ func TestReadInput_EmptyFile(t *testing.T) {
 
 	// Call ReadInput with the empty file and capture the result and any error
 	result, err := pipeline.ReadInput(tmp)
+	// [DEBUG] Empty file handling point — check if ReadInput correctly handles zero-byte files
 	// Check if an error occurred; if so, fail the test
 	if err != nil {
 		t.Fatalf("expected no error, got: %v", err)
