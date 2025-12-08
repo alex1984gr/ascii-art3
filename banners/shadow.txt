@@ -1,0 +1,62 @@
+# shadow.txt - alternate placeholder banner (same compact format as standard.txt)
+# This file is intentionally different to represent a different style.
+
+CHAR:A
+/\ 
+\ \
+/--\
+    
+    
+    
+    
+    
+
+CHAR:B
+|~~
+|__)
+|__)
+   
+   
+   
+   
+   
+
+CHAR: 
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:\n
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:@
+(@)
+@@@
+(@)
+   
+   
+   
+   
+   
+
+CHAR:#
+# #
+###
+# #
+   
+   
+   
+   
+   

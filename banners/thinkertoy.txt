@@ -1,0 +1,62 @@
+# thinkertoy.txt - small placeholder banner (compact format)
+# This mimics a different banner style for testing purposes.
+
+CHAR:A
+ __
+/__\
+\  /
+    
+    
+    
+    
+    
+
+CHAR:B
+|\ 
+|_) 
+|_) 
+    
+    
+    
+    
+    
+
+CHAR: 
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:\n
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:@
+ @ 
+(@)
+ @ 
+   
+   
+   
+   
+   
+
+CHAR:#
+###
+# #
+###
+   
+   
+   
+   
+   

@@ -1,0 +1,88 @@
+# standard.txt - simple placeholder banner font (custom compact format)
+# Format:
+# CHAR:<literal>
+# <row1>
+# <row2>
+# ... (8 rows per character)
+# Empty rows must be present to keep consistent height.
+# Use literal "\\n" for newline token if you want a key representing a newline.
+
+CHAR:A
+ _ 
+/ \
+|_|
+   
+   
+   
+   
+   
+
+CHAR:B
+__ 
+|_)
+|_)
+   
+   
+   
+   
+   
+
+CHAR: 
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:\n
+   
+   
+   
+   
+   
+   
+   
+   
+
+CHAR:@
+ @ 
+@@@
+ @ 
+   
+   
+   
+   
+   
+
+CHAR:#
+ # 
+###
+ # 
+   
+   
+   
+   
+   
+
+CHAR:1
+  | 
+ /  
+ |  
+    
+    
+    
+    
+    
+
+CHAR:!
+ ! 
+ ! 
+ . 
+   
+   
+   
+   
+   
