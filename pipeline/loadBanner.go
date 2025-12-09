@@ -56,85 +56,128 @@ func LoadBanner(name string) (map[string][]string, error) {
 // Escape sequences like "\n", "\t", "\r" are unescaped to their actual character values.
 // The function returns a map with character keys and 8-row glyph values.
 func LoadBannerFromReader(r io.Reader) (map[string][]string, error) {
-	// Create a scanner to read the input line by line.
+	// Read all lines first so we can detect the file's format and then parse accordingly.
 	scanner := bufio.NewScanner(r)
-
-	// Initialize the banner map to store glyph definitions.
-	banner := make(map[string][]string)
-
-	// Track the current character key being processed.
-	var currentKey string
-
-	// Track the rows (lines) being accumulated for the current character.
-	var rows []string
-
-	// Helper function to unescape special character sequences (e.g., "\n" → actual newline).
-	unescape := func(raw string) string {
-		// Replace the escaped sequence with the actual character value.
-		switch raw {
-		case "\\n":
-			return "\n"
-		case "\\t":
-			return "\t"
-		case "\\r":
-			return "\r"
-		case "\\\\":
-			return "\\"
-		default:
-			return raw
-		}
-	}
-
-	// Scan through each line of the input file.
+	var lines []string
 	for scanner.Scan() {
-		// Get the current line as a string.
-		line := scanner.Text()
-
-		// If this line starts with "CHAR:", it marks the beginning of a new glyph block.
-		if strings.HasPrefix(line, "CHAR:") {
-			// If we were already processing a previous glyph, save it first.
-			if currentKey != "" {
-				// Ensure the previous glyph has exactly 8 rows (pad with empty strings if needed).
-				for len(rows) < 8 {
-					rows = append(rows, "")
-				}
-				// Create a copy of the rows and store it in the banner map.
-				banner[currentKey] = append([]string(nil), rows...)
-			}
-
-			// Extract the character sequence after "CHAR:" and unescape it.
-			rawKey := strings.TrimPrefix(line, "CHAR:")
-			currentKey = unescape(rawKey)
-
-			// Reset the rows slice for the new glyph.
-			rows = nil
-			continue
-		}
-
-		// If we have not yet encountered a "CHAR:" line, skip this line (e.g., comments, blank lines).
-		if currentKey == "" {
-			continue
-		}
-
-		// Add this line as a row to the current glyph being built.
-		rows = append(rows, line)
+		lines = append(lines, scanner.Text())
 	}
-
-	// After scanning all lines, save the last glyph if one was being processed.
-	if currentKey != "" {
-		// Ensure the last glyph has exactly 8 rows (pad with empty strings if needed).
-		for len(rows) < 8 {
-			rows = append(rows, "")
-		}
-		// Create a copy and store it in the banner map.
-		banner[currentKey] = append([]string(nil), rows...)
-	}
-
-	// Check if the scanner encountered any errors during reading.
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 
-	// Return the fully populated banner map.
+	// Quick format detection: if any line starts with "CHAR:", treat this as the
+	// compact CHAR:<literal> format. Otherwise treat it as the common
+	// blank-line-separated glyph blocks format used by some remote repos.
+	usesCharHeader := false
+	for _, l := range lines {
+		if strings.HasPrefix(l, "CHAR:") {
+			usesCharHeader = true
+			break
+		}
+	}
+
+	banner := make(map[string][]string)
+
+	if usesCharHeader {
+		// Parse the existing CHAR: format (backwards compatible with earlier behavior).
+		var currentKey string
+		var rows []string
+		unescape := func(raw string) string {
+			switch raw {
+			case "\\n":
+				return "\n"
+			case "\\t":
+				return "\t"
+			case "\\r":
+				return "\r"
+			case "\\\\":
+				return "\\"
+			default:
+				return raw
+			}
+		}
+
+		for _, line := range lines {
+			if strings.HasPrefix(line, "CHAR:") {
+				if currentKey != "" {
+					for len(rows) < 8 {
+						rows = append(rows, "")
+					}
+					banner[currentKey] = append([]string(nil), rows...)
+				}
+				rawKey := strings.TrimPrefix(line, "CHAR:")
+				currentKey = unescape(rawKey)
+				rows = nil
+				continue
+			}
+
+			if currentKey == "" {
+				continue
+			}
+			rows = append(rows, line)
+		}
+
+		if currentKey != "" {
+			for len(rows) < 8 {
+				rows = append(rows, "")
+			}
+			banner[currentKey] = append([]string(nil), rows...)
+		}
+
+		return banner, nil
+	}
+
+	// Parse blank-line-separated blocks format. This format contains glyphs in
+	// sequence; we'll map them to ASCII codepoints by incrementing a rune
+	// counter. This mirrors how other parts of the remote project map glyphs.
+	var block []string
+	// Start before space so the first increment maps to 32 (space) if the file
+	// is arranged in the standard printable ASCII order.
+	char := rune(31)
+
+	emitBlock := func() {
+		if len(block) == 0 {
+			return
+		}
+		// Advance to the next character code and assign these rows.
+		char++
+		// Ensure exactly 8 rows for compatibility with the renderer.
+		for len(block) < 8 {
+			block = append(block, "")
+		}
+		// Convert rune to string key (single-character string).
+		banner[string(char)] = append([]string(nil), block...)
+		block = nil
+	}
+
+	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			// blank line => end of current glyph block
+			emitBlock()
+			continue
+		}
+		block = append(block, line)
+	}
+	// emit any trailing block
+	emitBlock()
+
+	// Ensure common control tokens exist in the banner map so tests and
+	// rendering logic can look them up directly. Use 8 empty rows for each
+	// control token if the font file didn't provide them explicitly.
+	ensure := func(key string) {
+		if _, ok := banner[key]; !ok {
+			rows := make([]string, 8)
+			for i := range rows {
+				rows[i] = ""
+			}
+			banner[key] = rows
+		}
+	}
+
+	ensure("\n")
+	ensure("\t")
+	ensure("\r")
+
 	return banner, nil
 }
