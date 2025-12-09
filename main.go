@@ -34,6 +34,7 @@ func main() {
 	if flag.NArg() > 0 {
 		// join all remaining non-flag arguments with spaces
 		input = strings.Join(flag.Args(), " ")
+		input = strings.ReplaceAll(input, "\\n", "\n")
 	} else {
 		// otherwise read the whole stdin into memory
 		b, err := io.ReadAll(os.Stdin)
