@@ -46,7 +46,10 @@ func RenderLines(tokens []string, banner map[string][]string) []string {
 
 		// Ensure the glyph has exactly 8 rows (pad with empty strings if needed).
 		for len(glyph) < 8 {
-			glyph = append(glyph, "")
+			missing := 8 - len(glyph)
+			for i := 0; i < missing; i++ {
+				glyph = append(glyph, "")
+			}
 		}
 
 		// Concatenate the glyph rows to the current rows (build horizontal).
