@@ -17,7 +17,21 @@ func WriteOutput(lines []string, w io.Writer) error {
 
 	lines[0] = strings.TrimLeft(lines[0], " ")
 
-	out := strings.Join(lines, "\n") + "\n"
-	_, err := io.WriteString(w, out)
-	return err
+	for _, line := range lines {
+		// Αν η γραμμή είναι literal "\n", τυπώνουμε πραγματικό newline
+		if line == `\n` {
+			_, err := io.WriteString(w, "\n")
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		_, err := io.WriteString(w, line+"\n")
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
