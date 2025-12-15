@@ -122,7 +122,7 @@ func LoadBannerFromReader(r io.Reader) (map[string][]string, error) {
 				continue
 			}
 			// Append line to current character's rows
-			rows = append(rows, line)
+			rows = append(rows, strings.TrimRight(line, " "))
 		}
 
 		// After finishing all lines, store the last character
