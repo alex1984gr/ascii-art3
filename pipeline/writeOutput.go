@@ -15,6 +15,8 @@ func WriteOutput(lines []string, w io.Writer) error {
 		return nil
 	}
 
+	lines[0] = strings.TrimLeft(lines[0], " ")
+
 	out := strings.Join(lines, "\n") + "\n"
 	_, err := io.WriteString(w, out)
 	return err
