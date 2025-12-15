@@ -162,22 +162,5 @@ func LoadBannerFromReader(r io.Reader) (map[string][]string, error) {
 	// emit any trailing block
 	emitBlock()
 
-	// Ensure common control tokens exist in the banner map so tests and
-	// rendering logic can look them up directly. Use 8 empty rows for each
-	// control token if the font file didn't provide them explicitly.
-	ensure := func(key string) {
-		if _, ok := banner[key]; !ok {
-			rows := make([]string, 8)
-			for i := range rows {
-				rows[i] = ""
-			}
-			banner[key] = rows
-		}
-	}
-
-	ensure("\n")
-	ensure("\t")
-	ensure("\r")
-
 	return banner, nil
 }
