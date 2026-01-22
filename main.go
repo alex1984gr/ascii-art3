@@ -16,88 +16,93 @@ import (
 	"ascii-art/pipeline"
 )
 
-// main is the program entrypoint: parse flags, read input, render ASCII art, write output.
+// main is the program entrypoint: parse flags, read input, render ASCII art, and write output.
 func main() {
-	// define `--font` flag (banner name without .txt) and default to "standard"
+	// Define the `--font` flag to specify which banner to use (standard, shadow, or thinkertoy).
+	// Defaults to "standard" if not provided.
 	font := flag.String("font", "standard", "banner name: standard, shadow or thinkertoy (filename without .txt)")
 
-	// define `--out` flag for optional output file; empty means write to stdout
+	// Define the `--out` flag for optional output file path.
+	// Empty string means output will be written to stdout.
 	out := flag.String("out", "", "output file (optional, defaults to stdout)")
 
-	// parse the command-line flags provided by the user
+	// Parse the command-line flags provided by the user.
 	flag.Parse()
 
-	// prepare a variable to hold the input text
+	// Prepare a variable to hold the input text to be rendered as ASCII art.
 	var input string
 
-	// if positional args are present, join them into the input string
+	// Check if positional arguments are present after flags.
 	if flag.NArg() > 0 {
-		// join all remaining non-flag arguments with spaces
+		// Join all remaining non-flag arguments into a single string separated by spaces.
 		input = strings.Join(flag.Args(), " ")
+		// Handle the special case where the only input is the literal string "\n".
 		if input == `\n` {
 			fmt.Println()
 			return
 		}
+		// Replace the literal string "\n" with actual newline characters.
 		input = strings.ReplaceAll(input, "\\n", "\n")
 	} else {
-		// otherwise read the whole stdin into memory
+		// If no positional arguments, read the entire input from stdin into memory.
 		b, err := io.ReadAll(os.Stdin)
 		if err != nil {
-			// print a helpful error to stderr and exit with non-zero status
+			// Print error to stderr and exit with status 1 if reading fails.
 			fmt.Fprintln(os.Stderr, "failed reading stdin:", err)
 			os.Exit(1)
 		}
-		// convert bytes read from stdin into a string
+		// Convert the bytes read from stdin into a string.
 		input = string(b)
 	}
 
-	// remove only a trailing newline from the input (but leave other whitespace intact)
+	// Remove only trailing newlines from the input (but preserve other whitespace).
 	input = strings.TrimRight(input, "\n")
 
-	// if after trimming there's no input, inform the user and exit
+	// If after trimming there's no input left, inform the user and exit with status 2.
 	if input == "" {
 		fmt.Fprintln(os.Stderr, "no input provided; pass text as arguments or via stdin")
 		os.Exit(2)
 	}
 
-	// validate the input according to the pipeline rules (length, allowed control chars, etc.)
+	// Validate the input according to the pipeline rules (maximum length, allowed control characters, etc.).
 	if err := pipeline.ValidateInput(input); err != nil {
 		fmt.Fprintln(os.Stderr, "invalid input:", err)
 		os.Exit(3)
 	}
 
-	// tokenize the validated input into rune-based tokens for rendering
+	// Tokenize the validated input into individual rune-based tokens for rendering.
 	tokens := pipeline.Tokenize(input)
 
-	// load the requested banner (font) by name from the `banners/` directory
+	// Load the requested banner (font) by name from the `banners/` directory.
 	banner, err := pipeline.LoadBanner(*font)
 	if err != nil {
-		// if loading fails, report and exit
+		// If banner loading fails, report the error to stderr and exit with status 4.
 		fmt.Fprintln(os.Stderr, "failed loading banner:", err)
 		os.Exit(4)
 	}
 
-	// render the tokens into ASCII-art lines using the loaded banner
+	// Render the tokens into ASCII-art lines (8 rows per character) using the loaded banner.
 	lines := pipeline.RenderLines(tokens, banner)
 
-	// default writer is stdout
+	// Default writer is stdout (standard output).
 	var w io.Writer = os.Stdout
 
-	// if an output filename was provided, create the file and use it as writer
+	// If an output filename was provided via the --out flag, create and use the file as writer.
 	if *out != "" {
 		f, err := os.Create(*out)
 		if err != nil {
-			// report the create error and exit
+			// If file creation fails, report the error to stderr and exit with status 5.
 			fmt.Fprintln(os.Stderr, "failed creating output file:", err)
 			os.Exit(5)
 		}
-		// ensure the file is closed when main returns
+		// Ensure the file is closed when main returns (even if an error occurs).
 		defer f.Close()
-		// set writer to the created file
+		// Set the writer to the created file instead of stdout.
 		w = f
 	}
 
-	// write the rendered lines to the chosen writer (stdout or file)
+	// Write the ASCII art lines to the chosen writer (stdout or file).
+	// WriteOutput will join the lines with newlines and add proper formatting.
 	if err := pipeline.WriteOutput(lines, w); err != nil {
 		fmt.Fprintln(os.Stderr, "failed writing output:", err)
 		os.Exit(6)

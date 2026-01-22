@@ -28,7 +28,8 @@ func TestWriteOutput_ToBuffer(t *testing.T) {
 	}
 
 	// Define the expected output: lines joined with newlines and a trailing newline
-	expected := "_ \n/ \\\n|_|\n"
+	// Note: leading spaces are preserved as they are essential to ASCII art design
+	expected := " _ \n/ \\\n|_|\n"
 	// Verify that the buffer's content matches the expected output
 	if buf.String() != expected {
 		// Report an error if the outputs don't match, showing both values

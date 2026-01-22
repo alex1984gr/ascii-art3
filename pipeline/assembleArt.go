@@ -15,6 +15,6 @@ func AssembleArt(lines []string) string {
 	}
 
 	// Join all lines together using the newline character as the separator.
-	// This concatenates the lines with "\n" between each pair.
+	// This concatenates the lines with "\n" between each pair, creating the final ASCII art string.
 	return strings.Join(lines, "\n")
 }

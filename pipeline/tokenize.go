@@ -15,7 +15,7 @@ func Tokenize(input string) []string {
 
 	// Iterate through the input string, decoding runes one at a time.
 	for len(input) > 0 {
-		// DecodeRuneInString returns the next rune and its byte width.
+		// DecodeRuneInString returns the next rune and its byte width in bytes.
 		r, size := utf8.DecodeRuneInString(input)
 
 		// Convert the rune to a string and append it to the tokens slice.

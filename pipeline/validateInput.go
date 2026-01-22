@@ -28,7 +28,7 @@ func ValidateInput(input string) error {
 		return errors.New("input too long")
 	}
 
-	// Iterate through each rune in the input string to validate characters.
+	// Iterate through each rune in the input string to validate individual characters.
 	for _, r := range input {
 		// If the rune is a control character (codepoint below 32):
 		if r < 32 {
