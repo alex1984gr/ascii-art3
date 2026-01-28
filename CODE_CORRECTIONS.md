@@ -126,25 +126,26 @@ expected := " _ \n/ \\\n|_|\n"  // Leading space now preserved
 
 ---
 
-### 5. **Consecutive Newlines Handling** ❌ → ✅
-**Location**: [pipeline/renderLines.go](pipeline/renderLines.go#L1-L36)
+### 5. **Consecutive Newlines Handling** ❌ → ✅ (UPDATED)
+**Location**: [pipeline/renderLines.go](pipeline/renderLines.go#L11-L44)
 
-**Original Problem**:
-When input had consecutive newlines like `"Hello\n\nThere"`, the program would render 8 empty lines for each newline, creating excessive blank space:
-- First `\n`: Flushes the "Hello" block (8 lines) ✓
-- Second `\n`: Flushes another empty block (8 more blank lines) ✗ WRONG!
+**Original Problem (UPDATED)**:
+Initial fix was adding blank lines on the FIRST newline, but the correct behavior is:
+- `"Hello\nThere"` should have NO blank line between them (single `\n` just separates lines)
+- `"Hello\n\nThere"` SHOULD have a blank line (two consecutive `\n` = one blank line separator)
 
-**Fix Applied**:
-Added `lastWasNewline` flag to track consecutive newlines:
+The initial logic was backwards!
+
+**Current Fix Applied** (CORRECTED):
 ```go
 lastWasNewline := false
 
 for _, tok := range tokens {
     if tok == "\n" {
         flush()
-        // If the last action was also a newline, add just one empty line
+        // If the last token was also a newline, add a blank line (consecutive newlines = blank line)
         if lastWasNewline {
-            out = append(out, "")
+            out = append(out, " ")  // ← Only add blank line on consecutive \n
         }
         lastWasNewline = true
         continue
@@ -154,28 +155,22 @@ for _, tok := range tokens {
 }
 ```
 
-**Result**:
-- First `\n`: Flushes content block (8 lines)
-- Second `\n`: Adds only a single empty line
-- Proper spacing between "Hello" and "There" with one empty line between them
+**How it works**:
+- **First `\n`**: Sets `lastWasNewline=true`, does NOT add blank line
+- **Second consecutive `\n`**: Sees `lastWasNewline=true`, appends `" "` (blank line)
+- **Third or more consecutive `\n`**: Each appends another blank line for additional spacing
+- **Non-newline after `\n`**: Resets flag and renders normally
 
-**Example Output**:
-```
- _    _          _   _
-| |  | |        | | | |
-| |__| |   ___  | | | |   ___
-... (8 lines total for Hello)
-
- _______   _
-|__   __| | |
-   | |    | |__     ___
-... (8 lines total for There)
-```
+**Results** (CORRECTED):
+- `"Hello\nThere"` → Hello + There directly adjacent, NO blank line ✓
+- `"Hello\n\nThere"` → Hello + 1 blank line + There ✓
+- `"Hello\n\n\nThere"` → Hello + 2 blank lines + There ✓
 
 **Why This Matters**:
-- Prevents excessive blank lines in output
-- Allows proper paragraph separation with newlines
-- Matches expected behavior for text formatting
+- Single newline separates content without adding space
+- Double newline creates visible paragraph break (one blank line)
+- Multiple consecutive newlines allow spacing control
+- Matches standard text formatting behavior
 
 ---
 

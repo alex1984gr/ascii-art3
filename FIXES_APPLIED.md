@@ -75,44 +75,47 @@ All the following issues have been identified and fixed to make the ASCII-Art pr
 
 ---
 
-## 5. **[CRITICAL] Newline Handling in Output - FIXED**
-- **File**: [pipeline/renderLines.go](pipeline/renderLines.go#L28-L37)
-- **Issue**: When input ended with `\n` (e.g., `"Hello\n"`), the newline was not producing a visible empty line in the output
-  - `"Hello\n"` should produce: 8 lines of Hello + 1 empty line
-  - `"Hello\n\nThere"` should produce: 8 lines Hello + 1 empty line + 8 lines There (consecutive `\n` ignored)
-  - Trailing newlines were lost because empty strings `""` don't display as lines
+## 5. **[CRITICAL] Newline Handling in Output - FIXED (UPDATED)**
+- **File**: [pipeline/renderLines.go](pipeline/renderLines.go#L28-L40)
+- **Issue**: Proper handling of newlines in input to create blank lines between text blocks
+  - `"Hello\nThere"` should produce: 8 lines Hello + 8 lines There (NO blank line between)
+  - `"Hello\n\nThere"` should produce: 8 lines Hello + 1 blank line + 8 lines There (one `\n` joins, two `\n` creates blank line)
+  - Single newline = no spacing, consecutive newlines = blank line separator
 
-- **Root Cause**: Empty strings in the lines array don't produce visible newlines when written
+- **Root Cause**: Initial implementation was adding blank lines on every newline, which was wrong
   
-- **Fix Applied**: 
+- **Final Fix Applied** (UPDATED): 
   ```go
   lastWasNewline := false
   
   for _, tok := range tokens {
     if tok == "\n" {
         flush()
-        // Only add one empty line if this is not a consecutive newline
-        if !lastWasNewline {
-            // Add a space character to represent the empty line (empty strings don't show)
+        // If the last token was also a newline, add a blank line (consecutive newlines = blank line)
+        if lastWasNewline {
+            // Add a space character to represent the blank line
             out = append(out, " ")
         }
         lastWasNewline = true
         continue
     }
+    // Any non-newline character means we're no longer in consecutive newline territory
     lastWasNewline = false
     // ... rest of glyph rendering
   }
   ```
 
 - **How it works**:
-  - **First `\n`**: Appends `" "` (space) to create a visible empty line
-  - **Consecutive `\n`**: Skipped (not appended) so multiple newlines don't create multiple empty lines
-  - **Trailing `\n`**: Always processed in the loop, so it's never lost
+  - **First `\n`**: Sets `lastWasNewline=true`, does NOT add a blank line
+  - **Second consecutive `\n`**: Sees `lastWasNewline=true`, appends `" "` (blank line), sets `lastWasNewline=true`
+  - **Third or more consecutive `\n`**: Each one appends another `" "` for additional blank lines
+  - **Non-newline after `\n`**: Resets `lastWasNewline=false` and renders normally
   
 - **Result**:
-  - `"Hello\n"` → 8-line Hello block + 1 empty line ✓
-  - `"Hello\n\nThere"` → 8-line Hello + 1 empty line + 8-line There ✓
+  - `"Hello\nThere"` → 8-line Hello + 8-line There (directly adjacent, no blank line) ✓
+  - `"Hello\n\nThere"` → 8-line Hello + 1 blank line + 8-line There ✓
   - `"Hello"` → 8-line Hello only (no trailing newline) ✓
+  - `"Hello\n\n\nThere"` → 8-line Hello + 2 blank lines + 8-line There ✓
 
 ---
 
