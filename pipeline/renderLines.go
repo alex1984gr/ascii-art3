@@ -9,7 +9,7 @@ func RenderLines(tokens []string, banner map[string][]string) []string {
 	current := make([]string, 8)
 	// Track whether we've rendered any characters since the last newline.
 	hasContent := false
-	// Track if the last token was a newline to skip consecutive newlines.
+	// Track if the last token was a newline to handle consecutive newlines (blank lines).
 	lastWasNewline := false
 
 	// flush writes the current 8-line buffer to the output and resets it for the next character.
@@ -28,9 +28,8 @@ func RenderLines(tokens []string, banner map[string][]string) []string {
 	for _, tok := range tokens {
 		if tok == "\n" {
 			flush()
-			// Only add one empty line if this is not a consecutive newline
-			if !lastWasNewline {
-				// Add a space to create a visible empty line
+			// If the last token was also a newline, add a blank line (consecutive newlines = blank line).
+			if lastWasNewline {
 				out = append(out, " ")
 			}
 			lastWasNewline = true
