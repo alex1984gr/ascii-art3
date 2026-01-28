@@ -7,21 +7,37 @@ func RenderLines(tokens []string, banner map[string][]string) []string {
 	var out []string
 	// Initialize a buffer of 8 strings to hold the current row being rendered.
 	current := make([]string, 8)
+	// Track whether we've rendered any characters since the last newline.
+	hasContent := false
+	// Track if the last token was a newline to skip consecutive newlines.
+	lastWasNewline := false
 
 	// flush writes the current 8-line buffer to the output and resets it for the next character.
 	flush := func() {
-		// Append the current buffer of 8 lines to the output slice.
-		// We always append even if lines contain only spaces, as spaces are part of ASCII art.
-		out = append(out, current...)
-		// Reset the buffer to prepare for the next set of 8 lines.
-		current = make([]string, 8)
+		// Only append if we have actual content to flush (skip consecutive newlines).
+		if hasContent {
+			// Append the current buffer of 8 lines to the output slice.
+			out = append(out, current...)
+			// Reset the buffer to prepare for the next set of 8 lines.
+			current = make([]string, 8)
+			// Mark that we've flushed the content.
+			hasContent = false
+		}
 	}
 
 	for _, tok := range tokens {
 		if tok == "\n" {
 			flush()
+			// Only add one empty line if this is not a consecutive newline
+			if !lastWasNewline {
+				// Add a space to create a visible empty line
+				out = append(out, " ")
+			}
+			lastWasNewline = true
 			continue
 		}
+		// Any non-newline character means we're no longer in consecutive newline territory.
+		lastWasNewline = false
 
 		// Look up the glyph (ASCII art representation) for the current token in the banner map.
 		glyph, ok := banner[tok]
@@ -32,6 +48,8 @@ func RenderLines(tokens []string, banner map[string][]string) []string {
 			for i := 0; i < 8; i++ {
 				current[i] += pad
 			}
+			// Mark that we have content.
+			hasContent = true
 			// Move to the next token without processing further.
 			continue
 		}
@@ -51,6 +69,8 @@ func RenderLines(tokens []string, banner map[string][]string) []string {
 			// Concatenate the glyph row to the current row being built.
 			current[i] += glyph[i]
 		}
+		// Mark that we have content.
+		hasContent = true
 	}
 
 	// After processing all tokens, flush the final buffer to the output.

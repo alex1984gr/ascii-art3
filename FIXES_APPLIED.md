@@ -75,7 +75,48 @@ All the following issues have been identified and fixed to make the ASCII-Art pr
 
 ---
 
-## 5. **[ENHANCEMENT] Comprehensive English Comments Added**
+## 5. **[CRITICAL] Newline Handling in Output - FIXED**
+- **File**: [pipeline/renderLines.go](pipeline/renderLines.go#L28-L37)
+- **Issue**: When input ended with `\n` (e.g., `"Hello\n"`), the newline was not producing a visible empty line in the output
+  - `"Hello\n"` should produce: 8 lines of Hello + 1 empty line
+  - `"Hello\n\nThere"` should produce: 8 lines Hello + 1 empty line + 8 lines There (consecutive `\n` ignored)
+  - Trailing newlines were lost because empty strings `""` don't display as lines
+
+- **Root Cause**: Empty strings in the lines array don't produce visible newlines when written
+  
+- **Fix Applied**: 
+  ```go
+  lastWasNewline := false
+  
+  for _, tok := range tokens {
+    if tok == "\n" {
+        flush()
+        // Only add one empty line if this is not a consecutive newline
+        if !lastWasNewline {
+            // Add a space character to represent the empty line (empty strings don't show)
+            out = append(out, " ")
+        }
+        lastWasNewline = true
+        continue
+    }
+    lastWasNewline = false
+    // ... rest of glyph rendering
+  }
+  ```
+
+- **How it works**:
+  - **First `\n`**: Appends `" "` (space) to create a visible empty line
+  - **Consecutive `\n`**: Skipped (not appended) so multiple newlines don't create multiple empty lines
+  - **Trailing `\n`**: Always processed in the loop, so it's never lost
+  
+- **Result**:
+  - `"Hello\n"` → 8-line Hello block + 1 empty line ✓
+  - `"Hello\n\nThere"` → 8-line Hello + 1 empty line + 8-line There ✓
+  - `"Hello"` → 8-line Hello only (no trailing newline) ✓
+
+---
+
+## 6. **[ENHANCEMENT] Comprehensive English Comments Added**
 All pipeline functions now have detailed English comments explaining:
 - What each line of code does
 - Why certain operations are performed

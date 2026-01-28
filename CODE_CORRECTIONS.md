@@ -126,7 +126,60 @@ expected := " _ \n/ \\\n|_|\n"  // Leading space now preserved
 
 ---
 
-### 5. **Removed Unused Import**
+### 5. **Consecutive Newlines Handling** ❌ → ✅
+**Location**: [pipeline/renderLines.go](pipeline/renderLines.go#L1-L36)
+
+**Original Problem**:
+When input had consecutive newlines like `"Hello\n\nThere"`, the program would render 8 empty lines for each newline, creating excessive blank space:
+- First `\n`: Flushes the "Hello" block (8 lines) ✓
+- Second `\n`: Flushes another empty block (8 more blank lines) ✗ WRONG!
+
+**Fix Applied**:
+Added `lastWasNewline` flag to track consecutive newlines:
+```go
+lastWasNewline := false
+
+for _, tok := range tokens {
+    if tok == "\n" {
+        flush()
+        // If the last action was also a newline, add just one empty line
+        if lastWasNewline {
+            out = append(out, "")
+        }
+        lastWasNewline = true
+        continue
+    }
+    lastWasNewline = false  // Reset when we hit non-newline content
+    // ... rest of glyph rendering
+}
+```
+
+**Result**:
+- First `\n`: Flushes content block (8 lines)
+- Second `\n`: Adds only a single empty line
+- Proper spacing between "Hello" and "There" with one empty line between them
+
+**Example Output**:
+```
+ _    _          _   _
+| |  | |        | | | |
+| |__| |   ___  | | | |   ___
+... (8 lines total for Hello)
+
+ _______   _
+|__   __| | |
+   | |    | |__     ___
+... (8 lines total for There)
+```
+
+**Why This Matters**:
+- Prevents excessive blank lines in output
+- Allows proper paragraph separation with newlines
+- Matches expected behavior for text formatting
+
+---
+
+### 6. **Removed Unused Import**
 **Location**: [pipeline/writeOutput.go](pipeline/writeOutput.go#L1-5)
 
 Since the `strings.TrimLeft()` call was removed, the `"strings"` import is no longer needed:
